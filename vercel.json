@@ -3,10 +3,6 @@
   "buildCommand": "npm run build:vercel",
   "outputDirectory": "dist/public",
   "framework": null,
-  "functions": {
-    "api/auth.ts": {},
-    "api/index.ts": {}
-  },
   "rewrites": [
     { "source": "/api/auth/(.*)", "destination": "/api/auth" },
     { "source": "/api/(.*)",      "destination": "/api/index" },
