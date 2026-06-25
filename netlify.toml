@@ -1,0 +1,30 @@
+[build]
+  command         = "npm run build:netlify"
+  publish         = "dist/public"
+  functions       = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION    = "20"
+
+# ── API: route all /api/* to the Netlify Function ────────────────────────────
+[[redirects]]
+  from   = "/api/*"
+  to     = "/.netlify/functions/api/:splat"
+  status = 200
+
+# ── SPA fallback: let React Router handle all other routes ───────────────────
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200
+
+# ── Cache headers ─────────────────────────────────────────────────────────────
+[[headers]]
+  for = "/api/*"
+  [headers.values]
+    Cache-Control = "no-store"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
