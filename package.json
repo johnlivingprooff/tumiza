@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build && esbuild api/_lib/boot.ts --platform=node --bundle --format=esm --outdir=dist --banner:js=\"import { createRequire } from 'module';const require = createRequire(import.meta.url);\"",
-    "build:vercel": "NODE_ENV=production vite build && mkdir -p api/functions && esbuild api/auth.ts --bundle --platform=node --format=esm --outfile=api/functions/auth.js --alias:@contracts=./contracts --alias:@db=./db --packages=external && esbuild api/index.ts --bundle --platform=node --format=esm --outfile=api/functions/index.js --alias:@contracts=./contracts --alias:@db=./db --packages=external",
+    "build:vercel": "NODE_ENV=production vite build && mkdir -p api/functions && esbuild api/_auth.ts --bundle --platform=node --format=esm --outfile=api/functions/auth.js --alias:@contracts=./contracts --alias:@db=./db --packages=external && esbuild api/_index.ts --bundle --platform=node --format=esm --outfile=api/functions/index.js --alias:@contracts=./contracts --alias:@db=./db --packages=external",
     "build:netlify": "NODE_ENV=production vite build",
     "lint": "eslint .",
     "preview": "vite preview",
@@ -20,7 +20,7 @@
     "seed:stations": "tsx db/seed.ts",
     "seed:users": "tsx db/seed-users.ts",
     "seed": "npm run seed:stations && npm run seed:users",
-    "vercel:check": "mkdir -p /tmp/tumiza-vercel && esbuild api/auth.ts --bundle --platform=node --format=esm --outfile=/tmp/tumiza-vercel/auth.js --alias:@contracts=./contracts --alias:@db=./db --packages=external && esbuild api/index.ts --bundle --platform=node --format=esm --outfile=/tmp/tumiza-vercel/index.js --alias:@contracts=./contracts --alias:@db=./db --packages=external && echo '✓ Both functions bundle successfully'"
+    "vercel:check": "mkdir -p /tmp/tumiza-vercel && esbuild api/_auth.ts --bundle --platform=node --format=esm --outfile=/tmp/tumiza-vercel/auth.js --alias:@contracts=./contracts --alias:@db=./db --packages=external && esbuild api/_index.ts --bundle --platform=node --format=esm --outfile=/tmp/tumiza-vercel/index.js --alias:@contracts=./contracts --alias:@db=./db --packages=external && echo '✓ Both functions bundle successfully'"
   },
   "dependencies": {
     "@hono/node-server": "^1.14.3",
