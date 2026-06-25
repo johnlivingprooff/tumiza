@@ -13,7 +13,7 @@ export default defineConfig(async () => {
   if (!isProduction) {
     const { default: devServer } = await import("@hono/vite-dev-server");
     plugins.unshift(
-      devServer({ entry: "api/boot.ts", exclude: [/^\/(?!api\/).*/] }),
+      devServer({ entry: "server/boot.ts", exclude: [/^\/(?!api\/).*/] }),
     );
   }
 

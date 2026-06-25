@@ -20,9 +20,9 @@
  */
 
 import "dotenv/config";
-import { getDb } from "../api/queries/connection";
+import { getDb } from "../server/queries/connection";
 import { users } from "./schema";
-import { hashPassword } from "../api/lib/password";
+import { hashPassword } from "../server/lib/password";
 import { nanoid } from "nanoid";
 import { eq } from "drizzle-orm";
 
