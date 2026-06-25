@@ -1,4 +1,4 @@
-import { createRouter, authedQuery, publicQuery } from "./middleware";
+import { createRouter, publicQuery } from "./middleware";
 import { getDb } from "./queries/connection";
 import { stations } from "@db/schema";
 import { eq } from "drizzle-orm";

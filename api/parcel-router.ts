@@ -2,7 +2,7 @@ import { z } from "zod";
 import { createRouter, publicQuery, authedQuery } from "./middleware";
 import { getDb } from "./queries/connection";
 import { parcels, parcelEvents, stations, notificationLogs } from "@db/schema";
-import { eq, like, or, and, desc, sql } from "drizzle-orm";
+import { eq, like, or, and, desc } from "drizzle-orm";
 import {
   sendNotification,
   sendDualNotification,
@@ -62,7 +62,7 @@ export const parcelRouter = createRouter({
       const collectionPin = generateCollectionPin();
       const qrCodeData = trackingNumber; // QR encodes the tracking number
 
-      const result = await db.insert(parcels).values({
+      const [parcel] = await db.insert(parcels).values({
         trackingNumber,
         collectionPin,
         qrCodeData,
@@ -80,9 +80,9 @@ export const parcelRouter = createRouter({
         currentStationId: input.originStationId,
         status: "registered",
         registeredBy: ctx.user.id,
-      });
+      }).returning();
 
-      const parcelId = Number(result[0].insertId);
+      const parcelId = parcel.id;
 
       // Initial event
       await db.insert(parcelEvents).values({
@@ -104,13 +104,7 @@ export const parcelRouter = createRouter({
         message: smsMessage,
       });
 
-      const parcel = await db
-        .select()
-        .from(parcels)
-        .where(eq(parcels.id, parcelId))
-        .limit(1);
-
-      return parcel[0];
+      return parcel;
     }),
 
   // ── Public Track ─────────────────────────────────────────────────────────────

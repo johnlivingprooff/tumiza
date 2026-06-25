@@ -9,6 +9,7 @@
  * Integration docs: https://developers.africastalking.com
  */
 
+import { eq } from "drizzle-orm";
 import { getDb } from "../queries/connection";
 import { notificationLogs } from "@db/schema";
 
@@ -179,16 +180,16 @@ export async function sendNotification(params: SendNotificationParams): Promise<
   const credentials = getATCredentials();
 
   // Always insert a log row first (pending), then update it
-  const insertResult = await db.insert(notificationLogs).values({
+  const [log] = await db.insert(notificationLogs).values({
     parcelId: params.parcelId,
     phoneNumber: params.phoneNumber,
     channel: params.channel,
     messageType: params.messageType,
     message: params.message,
     status: "pending",
-  });
+  }).returning();
 
-  const logId = Number(insertResult[0].insertId);
+  const logId = log.id;
 
   // Dry-run mode when AT credentials are missing (dev/test)
   if (!credentials) {
@@ -198,7 +199,7 @@ export async function sendNotification(params: SendNotificationParams): Promise<
     await db
       .update(notificationLogs)
       .set({ status: "sent", atStatus: "dry-run", atMessageId: "dry-run" })
-      .where(/* id */ (t) => t.id === logId as never);
+      .where(eq(notificationLogs.id, logId));
     return;
   }
 
@@ -219,7 +220,7 @@ export async function sendNotification(params: SendNotificationParams): Promise<
         atStatus: result?.status,
         atCost: result?.cost,
       })
-      .where((t) => t.id === logId as never);
+      .where(eq(notificationLogs.id, logId));
 
     console.log(
       `[notifications] ✓ ${params.channel.toUpperCase()} sent to ${params.phoneNumber} — ${result?.cost}`
@@ -231,7 +232,7 @@ export async function sendNotification(params: SendNotificationParams): Promise<
     await db
       .update(notificationLogs)
       .set({ status: "failed", errorMessage })
-      .where((t) => t.id === logId as never);
+      .where(eq(notificationLogs.id, logId));
     // Don't rethrow — notification failure should not break the parcel operation
   }
 }

@@ -22,14 +22,8 @@ export async function findUserByEmail(email: string) {
 }
 
 export async function createUser(data: InsertUser) {
-  const result = await getDb().insert(schema.users).values(data);
-  const id = Number(result[0].insertId);
-  const rows = await getDb()
-    .select()
-    .from(schema.users)
-    .where(eq(schema.users.id, id))
-    .limit(1);
-  return rows.at(0)!;
+  const [user] = await getDb().insert(schema.users).values(data).returning();
+  return user!;
 }
 
 export async function updateLastSignIn(unionId: string) {

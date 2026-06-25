@@ -162,10 +162,14 @@ async function seed() {
 
   console.log("Seeding Malawi stations with landmark addressing...");
 
+  const existing = await db.select({ id: stations.id }).from(stations).limit(1);
+  if (existing.length > 0) {
+    console.log("Stations already seeded — skipping");
+    return;
+  }
+
   for (const station of malawiStations) {
-    await db.insert(stations).values(station).onDuplicateKeyUpdate({
-      set: station,
-    });
+    await db.insert(stations).values(station);
   }
 
   console.log(`✓ Seeded ${malawiStations.length} stations with landmark data.`);

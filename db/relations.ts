@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { users, stations, parcels, parcelEvents, smsLogs } from "./schema";
+import { users, stations, parcels, parcelEvents, notificationLogs } from "./schema";
 
 export const usersRelations = relations(users, ({ many }) => ({
   parcelsRegistered: many(parcels, { relationName: "registeredBy" }),
@@ -29,7 +29,7 @@ export const parcelsRelations = relations(parcels, ({ one, many }) => ({
     relationName: "currentStation",
   }),
   events: many(parcelEvents),
-  smsLogs: many(smsLogs),
+  notificationLogs: many(notificationLogs),
 }));
 
 export const parcelEventsRelations = relations(parcelEvents, ({ one }) => ({
@@ -43,9 +43,9 @@ export const parcelEventsRelations = relations(parcelEvents, ({ one }) => ({
   }),
 }));
 
-export const smsLogsRelations = relations(smsLogs, ({ one }) => ({
+export const notificationLogsRelations = relations(notificationLogs, ({ one }) => ({
   parcel: one(parcels, {
-    fields: [smsLogs.parcelId],
+    fields: [notificationLogs.parcelId],
     references: [parcels.id],
   }),
 }));
