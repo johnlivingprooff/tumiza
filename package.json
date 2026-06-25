@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build && esbuild api/_lib/boot.ts --platform=node --bundle --format=esm --outdir=dist --banner:js=\"import { createRequire } from 'module';const require = createRequire(import.meta.url);\"",
-    "build:vercel": "NODE_ENV=production vite build",
+    "build:vercel": "NODE_ENV=production vite build && esbuild api/auth.ts --bundle --platform=node --format=esm --outfile=api/auth.js --alias:@contracts=./contracts --alias:@db=./db --packages=external && esbuild api/index.ts --bundle --platform=node --format=esm --outfile=api/index.js --alias:@contracts=./contracts --alias:@db=./db --packages=external && rm api/auth.ts api/index.ts",
     "build:netlify": "NODE_ENV=production vite build",
     "lint": "eslint .",
     "preview": "vite preview",
