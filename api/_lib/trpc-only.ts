@@ -5,8 +5,6 @@ import type { HttpBindings } from "@hono/node-server";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import { appRouter } from "./router";
 import { createContext } from "./context";
-import { env } from "./lib/env";
-import { createLoginHandler } from "./local-auth";
 
 const app = new Hono<{ Bindings: HttpBindings }>();
 
@@ -18,8 +16,6 @@ app.use(
     credentials: true,
   })
 );
-
-app.post("/api/auth/login", createLoginHandler());
 
 app.use("/api/trpc/*", async (c) => {
   return fetchRequestHandler({
@@ -33,14 +29,3 @@ app.use("/api/trpc/*", async (c) => {
 app.all("/api/*", (c) => c.json({ error: "Not Found" }, 404));
 
 export default app;
-
-if (env.isProduction) {
-  const { serve } = await import("@hono/node-server");
-  const { serveStaticFiles } = await import("./lib/vite");
-  serveStaticFiles(app);
-
-  const port = parseInt(process.env.PORT || "3000");
-  serve({ fetch: app.fetch, port }, () => {
-    console.log(`Tumiza running on http://localhost:${port}/`);
-  });
-}
