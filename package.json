@@ -1,11 +1,11 @@
 {
-  "name": "my-app",
+  "name": "tumiza-app",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && esbuild server/boot.ts --platform=node --bundle --format=esm --outdir=dist --banner:js=\"import { createRequire } from 'module';const require = createRequire(import.meta.url);\"",
+    "build": "vite build && esbuild api/_lib/boot.ts --platform=node --bundle --format=esm --outdir=dist --banner:js=\"import { createRequire } from 'module';const require = createRequire(import.meta.url);\"",
     "build:vercel": "NODE_ENV=production vite build",
     "build:netlify": "NODE_ENV=production vite build",
     "lint": "eslint .",

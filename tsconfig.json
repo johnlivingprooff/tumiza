@@ -13,7 +13,7 @@
       "@db/*": ["./db/*"]
     }
   },
-  "include": ["api", "server", "contracts", "db"],
+  "include": ["api", "contracts", "db"],
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" },

@@ -7,7 +7,7 @@
  * Netlify routes all /api/* requests here via netlify.toml [[redirects]].
  */
 
-import app from "../../server/boot";
+import app from "../../api/_lib/boot";
 
 export default async (request: Request) => {
   return app.fetch(request);

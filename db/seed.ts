@@ -1,4 +1,4 @@
-import { getDb } from "../server/queries/connection";
+import { getDb } from "../api/_lib/queries/connection";
 import { stations } from "./schema";
 
 // 15 Malawi courier stations with real landmark addressing.
