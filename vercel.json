@@ -5,10 +5,10 @@
   "framework": null,
   "functions": {
     "api/auth.ts": {
-      "includeFiles": "db/**,contracts/**"
+      "includeFiles": "api/_lib/**,db/**,contracts/**"
     },
     "api/index.ts": {
-      "includeFiles": "db/**,contracts/**"
+      "includeFiles": "api/_lib/**,db/**,contracts/**"
     }
   },
   "rewrites": [

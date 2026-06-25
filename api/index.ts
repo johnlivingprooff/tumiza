@@ -1,5 +1,5 @@
 import { handle } from "@hono/node-server/vercel";
-import app from "./_lib/trpc-only";
+import app from "./_lib/trpc-only.js";
 
 export const config = {
   api: {

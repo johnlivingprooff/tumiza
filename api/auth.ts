@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { bodyLimit } from "hono/body-limit";
 import type { HttpBindings } from "@hono/node-server";
-import { createLoginHandler } from "./_lib/local-auth";
+import { createLoginHandler } from "./_lib/local-auth.js";
 
 const app = new Hono<{ Bindings: HttpBindings }>();
 
